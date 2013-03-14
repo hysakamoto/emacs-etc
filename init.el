@@ -855,9 +855,18 @@
 ;; (when (fboundp 'terminal-init-bobcat)
 ;;   (terminal-init-bobcat))
 
-(setq helm-idle-delay             0.3
-      helm-input-idle-delay       0.3
+(setq helm-idle-delay             0.2
+      helm-input-idle-delay       0.2
       helm-candidate-number-limit 200)
+
+;; do not use locate for helm-for-files
+(setq helm-for-files-preferred-list
+  '(helm-source-buffers-list
+    helm-source-recentf
+    helm-source-bookmarks
+    helm-source-file-cache
+    helm-source-files-in-current-dir
+    ))
 
 (let ((key-and-func
        `((,(kbd "C-x b")   helm-for-files)
