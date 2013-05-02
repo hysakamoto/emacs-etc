@@ -1,14 +1,22 @@
 ;;
 ;; File init.el - These commands are executed when GNU emacs starts up.
 ;;
-;; revised 3/2/2012
+;; revised 5/1/2012
 ;;
-
 
 ;; load path for local elisp files
 (setq load-path (cons "~/.emacs.d/elisp" load-path))
-;; load path for auto-install elispfiles
+;; load path for auto-install elispfiles;
 (setq load-path (cons "~/.emacs.d/auto-install" load-path))
+;; load path for elpa packages 
+(setq load-path (cons "~/.emacs.d/elpa" load-path))
+(let* ((my-lisp-dir "~/.emacs.d/elpa")
+       (default-directory my-lisp-dir)
+       (orig-load-path load-path))
+  (setq load-path (cons my-lisp-dir nil))
+  (normal-top-level-add-subdirs-to-load-path)
+  (nconc load-path orig-load-path))
+
 
 ;===============================================================
 ; Startup
@@ -34,8 +42,8 @@
 ;; hide tool bar
 (tool-bar-mode -1)
 
-;; menu bar
-;; (menu-bar-mode -1) 
+;; hide menu bar
+(menu-bar-mode -1) 
 
 ;; scroll bar
 (set-scroll-bar-mode nil)
@@ -54,13 +62,14 @@
 (setq show-paren-delay 0)
 (setq show-paren-style 'expression) ; 'mixed
 ;; parentetheis color
-(set-face-background 'show-paren-match-face "#FFFF66")
+;; (set-face-background 'show-paren-match-face "#FFFF66")
 
 ;; region color
-(set-face-background 'region "#FFCC66")
+;; (set-face-background 'region "#FFCC66")
 
 ;; tab width
-(custom-set-variables '(tab-width 4))
+;; (custom-set-variables '(tab-width 4))
+(setq default-tab-width 4)
 
 ;; yes or no to y or n
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -91,7 +100,7 @@
 
 ;; highlight a line
 (global-hl-line-mode t)
-(set-face-background 'hl-line "#CCFF99")
+;(set-face-background 'hl-line "#CCFF99")
 
 ;; delete auto-save file when closing
 (setq delete-auto-save-files t)
@@ -118,6 +127,7 @@
 
 ;; (set-background-color "dark slate gray")
 ;; (set-foreground-color "blanched almond")
+
 
 ;===============================================================
 ; modeline
@@ -167,14 +177,14 @@
 ; Font
 ;===============================================================
 
-;; (cond
-;;  (window-system
-;;   (set-default-font "Inconsolata-10")
-;;   (set-face-font 'variable-pitch "Inconsolata-10")
-;;   (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208
-;; 					'("Takaoゴシック" . "unicode-bmp"))
-;;  )
-;; )
+(cond
+ (window-system
+  (set-default-font "Inconsolata-11")
+  (set-face-font 'variable-pitch "Inconsolata-11")
+  (set-fontset-font (frame-parameter nil 'font) 'japanese-jisx0208
+					'("Takaoゴシック" . "unicode-bmp"))
+ )
+)
 
 ;===============================================================
 ; Auto-install
@@ -374,7 +384,7 @@
 ;;===============================================================
 
 ;; set tab distance
-(setq c-basic-offset 2)
+(setq c-basic-offset 4)
 
 ;; This function is used in various programming language mode hooks below.  It
 ;; does indentation after every newline when writing a program.
@@ -470,49 +480,53 @@
 ; AUCTeX settings
 ;===============================================================
 
-(load "auctex.el" nil t t)
-(load "preview-latex.el" nil t t)
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
 
-;; load path for auctex elisp files
-(setq load-path (cons "~/.emacs.d/auctex" load-path))
-(load "auctex_settings.el")
-;;(load "auto-complete-auctex.el")  
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+(add-hook 'LaTeX-mode-hook 'turn-on-flyspell)
+
+;; Use pdflatex
+(setq TeX-PDF-mode t)
 
 ; column word number
 (add-hook 'LaTeX-mode-hook '
-	  (lambda () (auto-fill-mode t) (setq fill-column 80) (autopair-mode)
-		))
+	  (lambda () (auto-fill-mode t) (setq fill-column
+		70) (autopair-mode) ))
 
 (add-hook 'LaTeX-mode-hook
 		  '(lambda ()
 			 (local-set-key (kbd "<f7>")
 							'TeX-command-master)))
 
-(add-hook 'LaTeX-mode-hook
-		  '(lambda ()
-			 (local-set-key (kbd "\C-c\C-a")   ; 'a' for ask, change to anything you want 
-			   (lambda (arg) (interactive "P") 
-				 (let ((TeX-command-force nil)) 
-				   (TeX-command-master arg)))) 
-			 ))
-
-(setq TeX-command-force "")
-
 ;; (add-hook 'LaTeX-mode-hook
-;; 		  #'(lambda ()
-;; 			  (push '(?\right( . ?\left))
-;;                     (getf autopair-extra-pairs :everywhere))))
+;; 		  '(lambda ()
+;; 			 (local-set-key (kbd "\C-c\C-a")   ; 'a' for ask, change to anything you want 
+;; 			   (lambda (arg) (interactive "P") 
+;; 				 (let ((TeX-command-force nil)) 
+;; 				   (TeX-command-master arg)))) 
+;; 			 ))
 
-;; (add-hook 'LaTeX-mode-hook
-;;           #'(lambda ()
-;;               (push '(?$ . ?$)
-;;                     (getf autopair-extra-pairs :code))
-;; 			  (autopair-mode)))
+;; (setq TeX-command-force "")
 
-;; (add-hook 'c++-mode-hook
-;;           #'(lambda ()
-;;               (push '(?< . ?>)
-;;                     (getf autopair-extra-pairs :code))))
+;===============================================================
+; ac-math
+;===============================================================
+
+(require 'ac-math)
+(add-to-list 'ac-modes 'latex-mode)   ; make auto-complete aware of
+									  ; `latex-mode`
+
+(defun ac-latex-mode-setup ()         ; add ac-sources to default
+									  ; ac-sources
+  (setq ac-sources
+     (append '(ac-source-math-unicode ac-source-math-latex
+               ac-source-latex-commands) ac-sources)))
+
+(add-hook 'LaTeX-mode-hook 'ac-latex-mode-setup)
+
+(ac-flyspell-workaround)
 
 ;===============================================================
 ; gtags
@@ -574,6 +588,10 @@
              ;;(save-some-buffers (not compilation-ask-about-save) nil)
              (compile-internal "make run" "No more errors")))
       ))
+
+
+;; for annoying macro indentation in openmp
+;; (c-set-offset (quote cpp-macro) 0 nil)
 
 
 ;; Replacement for the comment-dwim command. If no region is selected
@@ -691,11 +709,11 @@
 ; Auto-complete
 ;===============================================================
 ;; https://github.com/m2ym/auto-complete
-
-;; Load
-(add-to-list 'load-path "/home/yusuke/.emacs.d/auto-complete")
+;; (add-to-list 'load-path "~/.emacs.d/elpa/popup-20130324.1305")
+;; (add-to-list 'load-path "~/.emacs.d/elpa/auto-complete-20130330.1836")
+(require 'auto-complete)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/auto-complete-20130330.1836/ac-dict")
 (require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "/home/yusuke/.emacs.d/auto-complete/ac-dict")
 (ac-config-default)
 
 ;; ignore case
@@ -725,9 +743,9 @@
 (add-to-list 'ac-modes 'latex-mode)
 
 ;; ;; key binding in auto-complete list
-;; (define-key ac-completing-map (kbd "C-n") 'ac-next)
-;; (define-key ac-completing-map (kbd "C-p") 'ac-previous)
-;; (define-key ac-completing-map (kbd "<tab>") 'ac-complete)
+(define-key ac-completing-map (kbd "C-n") 'ac-next)
+(define-key ac-completing-map (kbd "C-p") 'ac-previous)
+(define-key ac-completing-map (kbd "<tab>") 'ac-complete)
 (define-key ac-completing-map (kbd "M-/") 'ac-stop)
 
 
@@ -803,20 +821,21 @@
   (interactive "p")
   (kill-line 0))
 
-;; you may want to bind it to a different key
-(global-set-key [(control ,)] 'backward-kill-line)
+;; ;; you may want to bind it to a different key
+;; (global-set-key [(control ,)] 'backward-kill-line)
+(global-set-key (kbd "C-,") 'backward-kill-line)
 
 
 ;===============================================================
 ; color-moccur
 ;===============================================================
-(require 'color-moccur)
+;; (add-to-list 'load-path "~/.emacs.d/elpa/color-moccur-20120811.2127")
+;; (require 'color-moccur)
 
 
 ;===============================================================
 ; tabbar
 ;===============================================================
-
 (require 'tabbar)
 (tabbar-mode 1)
 
@@ -835,8 +854,8 @@
 (setq tabbar-buffer-list-function 'my-tabbar-buffer-list)
 
 ;; keybind
-(global-set-key (kbd "C-<tab>") 'tabbar-forward)
-(global-set-key (kbd "C-S-<tab>") 'tabbar-backward)
+(global-set-key (kbd "<C-tab>") 'tabbar-forward)
+(global-set-key (kbd "<C-S-iso-lefttab>") 'tabbar-backward)
 (global-set-key (kbd "C-`")   'tabbar-forward-group)
 (global-set-key (kbd "C-~")  'tabbar-backward-group)
 
@@ -880,5 +899,71 @@
         )))
   (loop for (key func) in key-and-func
         do (global-set-key key func)))
+
+;; want helm-M-x to show functions too
+
+
+;===============================================================
+; newsticker
+;===============================================================
+
+;; (require 'newsticker)
+
+;; ; W3M HTML renderer isn't essential, but it's pretty useful.
+;; ;; (require 'w3m)
+;; ;; (setq newsticker-html-renderer 'w3m-region)
+
+;; ; We want our feeds pulled every 10 minutes.
+;; (setq newsticker-retrieval-interval 600)
+
+;; ; Setup the feeds. We'll have a look at these in just a second.
+;; (setq newsticker-url-list-defaults nil)
+;; (setq newsticker-url-list
+;; 	  '(("Hatena News" "http://b.hatena.ne.jp/entrylist?sort=hot&threshold=&mode=rss")
+;; 		("Hatena Programming" "http://b.hatena.ne.jp/search/tag?safe=on&amp;sort=recent&amp;q=%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%9F%E3%83%B3%E3%82%B0&amp")
+;; 		)
+;; )
+
+;; 	  ;; '("http://b.hatena.ne.jp/entrylist?sort=hot&threshold=&mode=rss"))
+
+;; ; Optionally bind a shortcut for your new RSS reader.
+;; (global-set-key (kbd "C-c r") 'newsticker-treeview)
+
+;; ; Don't forget to start it!
+;; (newsticker-start)
+
+;===============================================================
+; package
+;===============================================================
+
+(require 'package)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/"))
+(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+
+(package-initialize)
+
+;===============================================================
+; custom-themes
+;===============================================================
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#ad7fa8" "#8cc4ff" "#eeeeec"])
+ '(background-color "#fdf6e3")
+ '(background-mode light)
+ '(cursor-color "#657b83")
+ '(custom-enabled-themes (quote (tango)))
+ '(custom-safe-themes (quote ("f5e56ac232ff858afb08294fc3a519652ce8a165272e3c65165c42d6fe0262a0" "1e7e097ec8cb1f8c3a912d7e1e0331caeed49fef6cff220be63bd2a6ba4cc365" "fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" default)))
+ '(foreground-color "#657b83"))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
 
 
