@@ -1,0 +1,33 @@
+;===============================================================
+; magit - interact with git
+; http://www.emacswiki.org/emacs/Magit
+;===============================================================
+(require 'magit)
+(global-set-key "\C-xg" 'magit-status)
+
+
+;===============================================================
+; flycheck
+;===============================================================
+;; (require 'flycheck)
+;; (global-flycheck-mode t)
+;; ;; (add-hook 'after-init-hook #'global-flycheck-mode)
+
+
+;===============================================================
+; ctags
+;===============================================================
+ (setq path-to-ctags "/usr/local/bin/ctags") ;; <- your ctags path here
+
+(defun create-tags (dir-name)
+  "Create tags file."
+  (interactive "DDirectory: ")
+  (shell-command
+   (format "ctags -f %s -e -R %s" path-to-ctags (directory-file-name dir-name)))
+  )
+
+(setq tags-file-name
+	  '("~/Work/FEniCS/lib/python2.7/site-packages/TAGS"))
+
+(eval-after-load "python-mode"
+  (visit-tags-table "~/Work/FEniCS/lib/python2.7/site-packages/TAGS"))
