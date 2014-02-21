@@ -1,0 +1,5 @@
+emacs setting files.
+
+init.el: main file loaded at emacs startup
+settings/*.el setting files for different major modes and such. loaded from init.el
+
