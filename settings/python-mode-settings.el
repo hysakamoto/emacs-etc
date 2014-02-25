@@ -52,8 +52,15 @@
 			(jedi:ac-setup)
 			(local-set-key "\C-cd" 'jedi:show-doc)
 			(local-set-key (kbd "C-.") 'jedi:complete)
-			(local-set-key (kbd "M-.") 'jedi:goto-definition)))
+			(local-set-key (kbd "M-.") 'jedi:goto-definition)
+			(local-set-key (kbd "M-,") 'find-tag)
+			(local-set-key (kbd "M-/") 'helm-etags-select)
+			)
+		  )
 
+
+(setq jedi:server-args
+      '("--sys-path" "/usr/local/src/fenics/dolfin/lib/python2.7/site-packages/"))
 
 ;; (autoload 'python-mode "python-mode" "Python Mode." t)
 ;; (add-to-list 'interpreter-mode-alist '("python" . python-mode))
@@ -70,3 +77,4 @@
 ;;  "';'.join(module_completion('''%s'''))\n"
 ;;  python-shell-completion-string-code
 ;;  "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+

@@ -33,8 +33,11 @@
 (setq tags-file-name
 	  '("/usr/local/src/fenics/dolfin/site-packages/TAGS"))
 
+;; (eval-after-load "python-mode"
+;;   (visit-tags-table "/usr/local/src/fenics/dolfin/site-packages/TAGS" "/usr/local/src/fenics/dolfin/lib/python2.7/site-packages/TAGS"))
+
 (eval-after-load "python-mode"
-  (visit-tags-table "/usr/local/src/fenics/dolfin/site-packages/TAGS"))
+  (visit-tags-table "/usr/local/src/fenics/dolfin/lib/python2.7/site-packages/TAGS"))
 
 
 ;===============================================================
