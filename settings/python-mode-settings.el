@@ -81,6 +81,7 @@
 
 (defun python-shell-send-switch ()
   "send the buffer to python shell and switch to it"
+  (interactive)
   (python-shell-send-buffer)
   (python-shell-switch-to-shell) )
 
