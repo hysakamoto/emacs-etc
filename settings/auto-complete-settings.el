@@ -20,7 +20,7 @@
  ac-use-menu-map t
  ac-candidate-limit 20
  ac-ignore-case t
- ac-auto-show-menu 1)
+ ac-auto-show-menu 2)
 
 ;; ;; ignore case
 ;; (setq ac-ignore-case t)

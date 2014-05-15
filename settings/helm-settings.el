@@ -35,6 +35,7 @@
          (,(kbd "M-z")   helm-do-grep)
          (,(kbd "C-S-h") helm-descbinds)
 		 (,(kbd "C-!") helm-imenu)
+		 ;; (,(kbd "C-x C-f") helm-find-files)
 		 )))
   (loop for (key func) in key-and-func
         do (global-set-key key func)))

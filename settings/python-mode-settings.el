@@ -90,3 +90,37 @@
 			(local-set-key (kbd "C-c C-c") 'python-shell-send-switch)
 			)
 		  )
+
+(defun dolfin-workon ()
+  "set environmental variables for FEniCS/Dolfin"
+  (interactive)
+  (setenv "DYLD_LIBRARY_PATH"
+		  (concat "/usr/local/src/dolfin/lib:" (getenv "DYLD_LIBRARY_PATH")))
+  (setenv "PATH"
+		  (concat "/usr/local/src/dolfin/bin:" (getenv "PATH")))
+  (setenv "PKG_CONFIG_PATH"
+		  (concat "/usr/local/src/dolfin/lib/pkgconfig:" (getenv "PKG_CONFIG_PATH")))
+  (setenv "PYTHONPATH"
+		  (concat "/Users/ysakamoto/.virtualenvs/fenics/lib/python2.7/site-packages:" (getenv "PYTHONPATH")))
+  (setenv "MANPATH"
+		  (concat "/usr/local/src/dolfin/share/man:" (getenv "$MANPATH")))
+  (setenv "DYLD_FRAMEWORK_PATH"
+		  (concat "/opt/local/Library/Frameworks:" (getenv "DYLD_FRAMEWORK_PATH"))
+		  )
+  )
+
+
+
+;===============================================================
+; highlight-indentation.el
+;===============================================================
+
+(require 'highlight-indentation)
+
+(add-hook 'python-mode-hook 'highlight-indentation-current-column-mode)
+
+(set-face-background 'highlight-indentation-face "#e3e3d3")
+(set-face-background 'highlight-indentation-current-column-face "#c3b3b3")
+
+;; (add-hook 'js2-mode-hook
+;; 'highlight-indentation-mode)

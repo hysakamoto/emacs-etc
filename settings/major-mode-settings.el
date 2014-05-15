@@ -49,4 +49,5 @@
 			  '(("\\.c$"   . c-mode))
 			  '(("\\.y$"   . c-mode))
 			  '(("\\.h$"   . c++-mode))
+			  '(("\\.R$"   . R-mode))
 			  auto-mode-alist))

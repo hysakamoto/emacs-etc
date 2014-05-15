@@ -38,7 +38,7 @@
 (load-file "~/.emacs.d/settings/python-mode-settings.el")
 (load-file "~/.emacs.d/settings/octave-mode-settings.el")
 (load-file "~/.emacs.d/settings/haskell-settings.el")
-
+(load-file "~/.emacs.d/settings/r-settings.el")
 
 ;; (load-file "~/.emacs.d/settings/popwin-settings.el")
 (load-file "~/.emacs.d/settings/autopair-settings.el")

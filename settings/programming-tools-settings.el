@@ -30,14 +30,14 @@
    (format "ctags -f %s -e -R %s" path-to-ctags (directory-file-name dir-name)))
   )
 
-(setq tags-file-name
-	  '("/usr/local/src/fenics/dolfin/site-packages/TAGS"))
+;; (setq tags-file-name
+	  ;; '("/usr/local/src/fenics/dolfin/site-packages/TAGS"))
 
 ;; (eval-after-load "python-mode"
 ;;   (visit-tags-table "/usr/local/src/fenics/dolfin/site-packages/TAGS" "/usr/local/src/fenics/dolfin/lib/python2.7/site-packages/TAGS"))
 
-(eval-after-load "python-mode"
-  (visit-tags-table "/usr/local/src/fenics/dolfin/lib/python2.7/site-packages/TAGS"))
+;; (eval-after-load "python-mode"
+;;   (visit-tags-table "/usr/local/src/fenics/dolfin/lib/python2.7/site-packages/TAGS"))
 
 
 ;===============================================================
@@ -55,3 +55,29 @@
 ;; (require 'yasnippet)
 ;; (yas--initialize)
 ;; (yas-load-directory "~/.emacs.d/yasnippet-0.8.0/snippets")
+
+
+
+;===============================================================
+; markdown
+;===============================================================
+
+
+(setq markdown-command "/usr/local/bin/multimarkdown")
+;; (setq markdown-command "/usr/local/bin/pandoc --number-sections")
+
+
+;; demote-key
+(add-hook 'markdown-mode-hook
+		  (function (lambda ()
+					  (local-set-key (kbd "C-c <right>") 'markdown-demote)
+					  (local-set-key (kbd "C-c <left>") 'markdown-promote)
+					  (local-set-key (kbd "C-c <up>") 'markdown-move-up)
+					  (local-set-key (kbd "C-c <down>") 'markdown-move-down)
+					  (local-set-key (kbd "M-<right>") 'windmove-right)
+					  (local-set-key (kbd "M-<left>") 'windmove-left)
+					  (local-set-key (kbd "M-<up>") 'windmove-up)
+					  (local-set-key (kbd "M-<down>") 'windmove-down)
+					  )
+					)
+		  )
