@@ -56,16 +56,12 @@
 ;; (yas--initialize)
 ;; (yas-load-directory "~/.emacs.d/yasnippet-0.8.0/snippets")
 
-
-
 ;===============================================================
 ; markdown
 ;===============================================================
 
-
 (setq markdown-command "/usr/local/bin/multimarkdown")
-;; (setq markdown-command "/usr/local/bin/pandoc --number-sections")
-
+(setq markdown-command "/usr/local/bin/pandoc -s --mathml")
 
 ;; demote-key
 (add-hook 'markdown-mode-hook
@@ -78,6 +74,18 @@
 					  (local-set-key (kbd "M-<left>") 'windmove-left)
 					  (local-set-key (kbd "M-<up>") 'windmove-up)
 					  (local-set-key (kbd "M-<down>") 'windmove-down)
+					  )
+					)
+		  )
+
+
+;; use 4 spaces for indentation
+(add-hook 'markdown-mode-hook
+		  (function (lambda ()
+					  (setq-default indent-tabs-mode nil)
+					  (setq-default tab-width 4)
+					  (setq indent-line-function 'insert-tab)
+                      (local-set-key (kbd "RET") 'newline)
 					  )
 					)
 		  )

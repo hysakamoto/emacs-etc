@@ -201,3 +201,19 @@
 ;; ;; you may want to bind it to a different key
 ;; (global-set-key [(control ,)] 'backward-kill-line)
 (global-set-key (kbd "C-,") 'backward-kill-line)
+
+;===============================================================
+; anzu-mode
+;===============================================================
+;; http://qiita.com/syohex/items/56cf3b7f7d9943f7a7ba
+(global-anzu-mode +1)
+(custom-set-variables
+ '(anzu-mode-lighter "")
+ '(anzu-deactivate-region t)
+ '(anzu-search-threshold 1000))
+
+;===============================================================
+; volatile-highlights
+;===============================================================
+(require 'volatile-highlights)
+(volatile-highlights-mode t)

@@ -31,29 +31,28 @@
 ;; Set PYTHONPATH, because we don't load .bashrc
 (setenv "PYTHONPATH"
 		(concat
-		 "/usr/local/src/fenics/lib/python2.7/site-packages" ":"
+		 "/usr/local/src/fenics-1.4/lib/python2.7/site-packages:"
 		 (getenv "PYTHONPATH")
 		 )
 		)
 
-;; ;; example of setting env var named “path”, by appending a new path to existing path
-;; (setenv "PATH"
-;; 		(concat
-;; 		 "/usr/local/src/fenics/dolfin/bin" ":"
-;; 		 (getenv "PATH")
-;; 		 )
-;; 		)
+(setenv "PATH"
+		(concat
+		 "/usr/local/src/fenics-1.4/dolfin/bin" ":"
+		 (getenv "PATH")
+		 )
+		)
 
 (setenv "DYLD_LIBRARY_PATH"
 		(concat
-		 "/usr/local/src/fenics/lib" ":"
+		 "/usr/local/src/fenics-1.4/lib" ":"
 		 (getenv "DYLD_LIBRARY_PATH")
 		 )
 		)
 
 (setenv "PKG_CONFIG_PATH"
 		(concat
-		 "/usr/local/src/fenics/lib/pkgconfig" ":"
+		 "/usr/local/src/fenics-1.4/lib/pkgconfig" ":"
 		 (getenv "PKG_CONFIG_PATH")
 		 )
 		)
@@ -61,7 +60,7 @@
 
 (setenv "MANPATH"
 		(concat
-		 "/usr/local/src/fenics/share/man" ":"
+		 "/usr/local/src/fenics-1.4/share/man" ":"
 		 (getenv "MANPATH")
 		 )
 		)
@@ -75,7 +74,6 @@
 		)
 
 
-
-(setenv "UFC_DIR" "/usr/local/src/fenics/share/ufc/")
+(setenv "UFC_DIR" "/usr/local/src/fenics-1.4/share/ufc/")
 
 

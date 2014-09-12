@@ -1,5 +1,5 @@
 ;; python autocomplete
-(add-hook 'python-mode-hook 'auto-complete-mode)
+;; (add-hook 'python-mode-hook 'auto-complete-mode)
 
 ;; virtualenv
 ;; (eval-after-load "python-mode"
@@ -7,7 +7,7 @@
 
 ;; shared settings
 (setq py-electric-colon-active t)
-(add-hook 'python-mode-hook 'autopair-mode)
+;; (add-hook 'python-mode-hook 'autopair-mode)
 (add-hook 'python-mode-hook 'yas-minor-mode)
 
 
@@ -49,12 +49,13 @@
 (add-hook 'python-mode-hook
 		  (lambda ()
 			(jedi:setup)
-			(jedi:ac-setup)
+			;; (jedi:ac-setup)
 			(local-set-key "\C-cd" 'jedi:show-doc)
 			(local-set-key (kbd "C-.") 'jedi:complete)
 			(local-set-key (kbd "M-.") 'jedi:goto-definition)
 			(local-set-key (kbd "M-,") 'find-tag)
 			(local-set-key (kbd "M-/") 'helm-etags-select)
+			(setq ac-auto-start nil)
 			)
 		  )
 
@@ -108,7 +109,6 @@
 		  (concat "/opt/local/Library/Frameworks:" (getenv "DYLD_FRAMEWORK_PATH"))
 		  )
   )
-
 
 
 ;===============================================================

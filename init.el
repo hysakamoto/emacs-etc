@@ -41,7 +41,7 @@
 (load-file "~/.emacs.d/settings/r-settings.el")
 
 ;; (load-file "~/.emacs.d/settings/popwin-settings.el")
-(load-file "~/.emacs.d/settings/autopair-settings.el")
+(load-file "~/.emacs.d/settings/pair-settings.el")
 ;; (load-file "~/.emacs.d/settings/color-moccur-settings.el")
 
 (load-file "~/.emacs.d/settings/tabbar-settings.el")

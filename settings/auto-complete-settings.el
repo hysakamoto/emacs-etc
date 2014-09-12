@@ -15,12 +15,23 @@
 
 
 (setq
- ac-auto-start 4
+ ac-auto-start nil
  ac-override-local-map nil
  ac-use-menu-map t
  ac-candidate-limit 20
  ac-ignore-case t
- ac-auto-show-menu 2)
+ ac-auto-show-menu nil
+)
+
+;; ;; key binding in auto-complete list
+;; (define-key ac-completing-map (kbd "C-n") 'ac-next)
+;; (define-key ac-completing-map (kbd "C-p") 'ac-previous)
+;; (define-key ac-completing-map (kbd "C-<tab>") 'ac-complete)
+;; (define-key ac-completing-map (kbd "M-/") 'ac-stop)
+
+(define-key ac-mode-map (kbd "C-<tab>") 'auto-complete)
+
+
 
 ;; ;; ignore case
 ;; (setq ac-ignore-case t)
@@ -41,22 +52,17 @@
 ;;                    ac-source-words-in-buffer))
 ;; (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 
-;; key binding in auto-complete list
-(define-key ac-completing-map (kbd "C-n") 'ac-next)
-(define-key ac-completing-map (kbd "C-p") 'ac-previous)
-(define-key ac-completing-map (kbd "<tab>") 'ac-complete)
-(define-key ac-completing-map (kbd "M-/") 'ac-stop)
 
+;; ETAGS
 
+;; (add-hook 'auto-complete-mode-hook 'ac-etags-ac-setup)
 
+;; (custom-set-variables
+;;   '(ac-etags-requires 1))
 
+;; (eval-after-load "ctags"
+;;   '(progn
+;;       (ac-etags-setup)))
 
-(custom-set-variables
-  '(ac-etags-requires 1))
-
-(eval-after-load "ctags"
-  '(progn
-      (ac-etags-setup)))
-
-(add-hook 'c-mode-common-hook 'ac-etags-ac-setup)
-(add-hook 'python-mode-common-hook 'ac-etags-ac-setup)
+;; (add-hook 'c-mode-common-hook 'ac-etags-ac-setup)
+;; (add-hook 'python-mode-common-hook 'ac-etags-ac-setup)
