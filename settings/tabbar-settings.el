@@ -32,6 +32,11 @@ Emacs buffer are those starting with “*”."
 	 "Web"
 	 )
 	((memq major-mode
+		   '(c++-mode
+			 c-mode))
+	 "C"
+	 )
+	((memq major-mode
 		   '(lisp-mode
 			 emacs-lisp-mode
 			 common-lisp-mode))
@@ -42,6 +47,11 @@ Emacs buffer are those starting with “*”."
 			 inferior-python-mode))
 	 "Python"
 	 )
+	((memq major-mode
+		   '(haskell-mode
+			 inferior-haskell-mode))
+	 "Haskell"
+	 )
 	((string-equal "*" (substring (buffer-name) 0 1))
      "Emacs Buffer"
      )
@@ -49,6 +59,14 @@ Emacs buffer are those starting with “*”."
      "User Buffer"
      )
     )))
+
+
+;; hide buttons on the left
+(dolist (btn '(tabbar-buffer-home-button
+               tabbar-scroll-left-button
+               tabbar-scroll-right-button))
+  (set btn (cons (cons "" nil)
+                 (cons "" nil))))
 
 ;; (setq *tabbar-ignore-buffers* '("TAGS" ".bbdb" "diary"))
 ;; (setq tabbar-buffer-list-function
@@ -88,3 +106,25 @@ Emacs buffer are those starting with “*”."
 (global-set-key (kbd "s-<left>") 'tabbar-backward)
 (global-set-key (kbd "s-S-<right>")   'tabbar-forward-group)
 (global-set-key (kbd "s-S-<left>")  'tabbar-backward-group)
+
+;; super+# to switch
+(defun my-tabbar-select-tab-by-number (n)
+  "Select Nth tab."
+  (interactive "p")
+  (let* ((tabset (tabbar-current-tabset t))
+         (tab (tabbar-selected-tab tabset))
+         previous)
+    (when (and tabset (numberp n) (<= 1 n))
+      (while (setq previous (tabbar-tab-next tabset tab t))
+        (setq tab previous))
+      (loop for i from 1 below n
+            do (setq tab (tabbar-tab-next tabset tab))
+            unless (tabbar-tab-next tabset tab) return nil)
+      (tabbar-click-on-tab tab))))
+
+(loop for i from 1 to 9 for fn =
+	  (intern (format "my-tabbar-select-tab-%d" i))
+	  do (fset fn `(lambda () (interactive)
+					 (my-tabbar-select-tab-by-number ,i)))
+	  (global-set-key (read-kbd-macro
+					   (format "s-%d" i)) fn))

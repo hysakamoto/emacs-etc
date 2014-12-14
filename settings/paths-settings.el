@@ -31,28 +31,28 @@
 ;; Set PYTHONPATH, because we don't load .bashrc
 (setenv "PYTHONPATH"
 		(concat
-		 "/usr/local/src/fenics-1.4/lib/python2.7/site-packages:"
+		 "/usr/local/src/fenics/lib/python2.7/site-packages:"
 		 (getenv "PYTHONPATH")
 		 )
 		)
 
 (setenv "PATH"
 		(concat
-		 "/usr/local/src/fenics-1.4/dolfin/bin" ":"
+		 "/usr/local/src/fenics/dolfin/bin" ":"
 		 (getenv "PATH")
 		 )
 		)
 
 (setenv "DYLD_LIBRARY_PATH"
 		(concat
-		 "/usr/local/src/fenics-1.4/lib" ":"
+		 "/usr/local/src/fenics/lib" ":"
 		 (getenv "DYLD_LIBRARY_PATH")
 		 )
 		)
 
 (setenv "PKG_CONFIG_PATH"
 		(concat
-		 "/usr/local/src/fenics-1.4/lib/pkgconfig" ":"
+		 "/usr/local/src/fenics/lib/pkgconfig" ":"
 		 (getenv "PKG_CONFIG_PATH")
 		 )
 		)
@@ -60,7 +60,7 @@
 
 (setenv "MANPATH"
 		(concat
-		 "/usr/local/src/fenics-1.4/share/man" ":"
+		 "/usr/local/src/fenics/share/man" ":"
 		 (getenv "MANPATH")
 		 )
 		)
@@ -74,6 +74,6 @@
 		)
 
 
-(setenv "UFC_DIR" "/usr/local/src/fenics-1.4/share/ufc/")
+(setenv "UFC_DIR" "/usr/local/src/fenics/share/ufc/")
 
 

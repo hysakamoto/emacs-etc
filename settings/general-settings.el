@@ -38,10 +38,15 @@
 (setq show-paren-delay 0)
 (setq show-paren-style 'expression) ; 'mixed
 ;; parentetheis color
-;; (set-face-background 'show-paren-match-face "#FFFF66")
+;; (set-face-background 'show-paren-match-face "orangered4")
 
 ;; region color
-;; (set-face-background 'region "#FFCC66")
+;; (set-face-background 'region "tomato4")
+
+;; highlight a line
+(global-hl-line-mode t)
+
+;; #383838
 
 ;; tab width
 ;; (custom-set-variables '(tab-width 4))
@@ -75,10 +80,6 @@
 
 ;; disable beep sound
 (setq visible-bell nil)
-
-;; highlight a line
-(global-hl-line-mode t)
-;(set-face-background 'hl-line "#CCFF99")
 
 ;; delete auto-save file when closing
 (setq delete-auto-save-files t)
@@ -114,9 +115,6 @@
 
 ;; Use Emacs terminfo, not system terminfo
 (setq system-uses-terminfo nil)
-
-;; ;; Preventing Aquamacs from changing those properties when opening additional windows
-;; (setq default-frame-alist '((background-color . "white") (left . 0) (width . 141) (height . 44)))
 
 
 ;; mouse scrolls
@@ -201,6 +199,18 @@
 ;; ;; you may want to bind it to a different key
 ;; (global-set-key [(control ,)] 'backward-kill-line)
 (global-set-key (kbd "C-,") 'backward-kill-line)
+
+;===============================================================
+; rotate-between-beginnig-of-line-or-first-word
+;===============================================================
+(defun my-goto-line-beginning-or-indent (&optional $position)
+  (interactive)
+  (or $position (setq $position (point)))
+  (let (($starting-position (progn (back-to-indentation) (point))))
+    (if (eq $starting-position $position)
+      (move-beginning-of-line 1))))
+
+(global-set-key (kbd "C-a") 'my-goto-line-beginning-or-indent)
 
 ;===============================================================
 ; anzu-mode

@@ -17,7 +17,6 @@
 
 (setq compilation-finish-function 'colorize-compilation)
 
-
 (setq auto-mode-alist
       (append '(("\\.C$"  . c++-mode)
                 ("\\.cc$" . c++-mode)
@@ -60,11 +59,8 @@
              (compilation-start "make run")))
       ))
 
-
 ;; for annoying macro indentation in openmp
 ;; (c-set-offset (quote cpp-macro) 0 nil)
-
-
 
 ;===============================================================
 ; GDB Mode

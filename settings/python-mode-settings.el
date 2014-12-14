@@ -43,30 +43,68 @@
 ;; 		  (virtualenv-workon "ys-mbp")))
 
 
+;===============================================================
+; jedi
+;===============================================================
 
-;; jedi setup
 (require 'jedi)
-(add-hook 'python-mode-hook
-		  (lambda ()
-			(jedi:setup)
-			;; (jedi:ac-setup)
-			(local-set-key "\C-cd" 'jedi:show-doc)
-			(local-set-key (kbd "C-.") 'jedi:complete)
-			(local-set-key (kbd "M-.") 'jedi:goto-definition)
-			(local-set-key (kbd "M-,") 'find-tag)
-			(local-set-key (kbd "M-/") 'helm-etags-select)
-			(setq ac-auto-start nil)
-			)
-		  )
 
+;; use the setting from
+;; http://txt.arboreus.com/2013/02/21/jedi.el-jump-to-definition-and-back.html
+;; don't use default keybindings from jedi.el; keep C-. free
+(setq jedi:setup-keys nil)
+(setq jedi:tooltip-method nil)
+(autoload 'jedi:setup "jedi" nil t)
+(add-hook 'python-mode-hook 'jedi:setup)
+
+;; Instead define these functions:
+(defvar jedi:goto-stack '())
+(defun jedi:jump-to-definition ()
+  (interactive)
+  (add-to-list 'jedi:goto-stack
+               (list (buffer-name) (point)))
+  (jedi:goto-definition))
+(defun jedi:jump-back ()
+  (interactive)
+  (let ((p (pop jedi:goto-stack)))
+    (if p (progn
+            (switch-to-buffer (nth 0 p))
+            (goto-char (nth 1 p))))))
+
+;; redefine jedi's C-. (jedi:goto-definition)
+;; to remember position, and set C-, to jump back
+(add-hook 'python-mode-hook
+          '(lambda ()
+             (local-set-key (kbd "C-.") 'jedi:jump-to-definition)
+             (local-set-key (kbd "C-,") 'jedi:jump-back)
+             (local-set-key (kbd "C-c d") 'jedi:show-doc)
+             (local-set-key (kbd "C-<tab>") 'jedi:complete)))
+
+;; (add-hook 'python-mode-hook
+;; 		  (lambda ()
+;; 			(jedi:setup)
+;; 			;; (jedi:ac-setup)
+;; 			(local-set-key "\C-cd" 'jedi:show-doc)
+;; 			(local-set-key (kbd "C-.") 'jedi:complete)
+;; 			(local-set-key (kbd "M-.") 'jedi:goto-definition)
+;; 			(local-set-key (kbd "M-,") 'find-tag)
+;; 			(local-set-key (kbd "M-/") 'helm-etags-select)
+;; 			(setq ac-auto-start nil)
+;; 			)
+;; 		  )
 
 (setq jedi:server-args
       '("--sys-path" "/usr/local/src/fenics/dolfin/lib/python2.7/site-packages/"))
 
+
 ;; (autoload 'python-mode "python-mode" "Python Mode." t)
 ;; (add-to-list 'interpreter-mode-alist '("python" . python-mode))
 
-;; ipython
+
+;===============================================================
+; ipython
+;===============================================================
+
 (setq
  python-shell-interpreter "ipython"
  python-shell-interpreter-args ""
@@ -92,24 +130,24 @@
 			)
 		  )
 
-(defun dolfin-workon ()
+(defun fenics-workon ()
   "set environmental variables for FEniCS/Dolfin"
   (interactive)
   (setenv "DYLD_LIBRARY_PATH"
-		  (concat "/usr/local/src/dolfin/lib:" (getenv "DYLD_LIBRARY_PATH")))
+		  (concat "/usr/local/src/fenics/lib:"
+				  (getenv "DYLD_LIBRARY_PATH")))
   (setenv "PATH"
-		  (concat "/usr/local/src/dolfin/bin:" (getenv "PATH")))
+		  (concat "/usr/local/src/fenics/bin:" (getenv "PATH")))
   (setenv "PKG_CONFIG_PATH"
-		  (concat "/usr/local/src/dolfin/lib/pkgconfig:" (getenv "PKG_CONFIG_PATH")))
+		  (concat "/usr/local/src/fenics/lib/pkgconfig:" (getenv "PKG_CONFIG_PATH")))
   (setenv "PYTHONPATH"
 		  (concat "/Users/ysakamoto/.virtualenvs/fenics/lib/python2.7/site-packages:" (getenv "PYTHONPATH")))
   (setenv "MANPATH"
-		  (concat "/usr/local/src/dolfin/share/man:" (getenv "$MANPATH")))
+		  (concat "/usr/local/src/fenics/share/man:" (getenv "$MANPATH")))
   (setenv "DYLD_FRAMEWORK_PATH"
 		  (concat "/opt/local/Library/Frameworks:" (getenv "DYLD_FRAMEWORK_PATH"))
 		  )
   )
-
 
 ;===============================================================
 ; highlight-indentation.el
