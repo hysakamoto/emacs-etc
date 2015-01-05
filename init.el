@@ -40,8 +40,6 @@
 (load-file "~/.emacs.d/settings/bytecompile-settings.el")
 (load-file "~/.emacs.d/settings/redo-settings.el")
 
-;; (load-file "~/.emacs.d/settings/windows-settings.el")
-
 (load-file "~/.emacs.d/settings/major-mode-settings.el")
 
 ;; programming settings
@@ -57,12 +55,13 @@
 (load-file "~/.emacs.d/settings/pair-settings.el")
 ;; (load-file "~/.emacs.d/settings/color-moccur-settings.el")
 
-(load-file "~/.emacs.d/settings/tabbar-settings.el")
+;; (load-file "~/.emacs.d/settings/tabbar-settings.el")
 
 (load-file "~/.emacs.d/settings/helm-settings.el")
 
 (load-file "~/.emacs.d/settings/programming-tools-settings.el")
 
+(load-file "~/.emacs.d/settings/workspace-settings.el")
 
 
 

@@ -36,7 +36,7 @@
  ;; open helm buffer inside current window, not occupy whole other window
  ;; helm-split-window-in-side-p           t
  ;; fuzzy matching buffer names when non--nil
- helm-buffers-fuzzy-matching           t
+ ;; helm-buffers-fuzzy-matching           t
  ;; move to end or beginning of source when reaching top or bottom of source.
  ;; helm-move-to-line-cycle-in-source     t
  ;; search for library in `require' and `declare-function' sexp.

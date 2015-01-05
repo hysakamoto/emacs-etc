@@ -7,7 +7,7 @@
 (setq mac-command-modifier 'meta)
 
 ;; disable global C-z
-;(global-unset-key "\C-z")
+(global-unset-key "\C-z")
 
 ;; switching windows
 ;; (windmove-default-keybindings 'alt)

@@ -162,6 +162,13 @@
 (global-set-key "\M-;" 'comment-dwim-line)
 
 
+;; store all backup and autosave files in the tmp dir
+(setq emacs-temp-dir "~/.emacs.d/tmp")
+(setq backup-directory-alist
+      `((".*" . , emacs-temp-dir)))
+(setq auto-save-file-name-transforms
+      `((".*" , emacs-temp-dir t)))
+
 ;===============================================================
 ; word count
 ;===============================================================
@@ -227,3 +234,15 @@
 ;===============================================================
 (require 'volatile-highlights)
 (volatile-highlights-mode t)
+
+;===============================================================
+; copy rectangle region
+;===============================================================
+;;; http://yohshiy.blog.fc2.com/blog-entry-254.html
+(defun copy-rectangle-ring-save (start end)
+  "Copy the region-rectangle and save it as the last killed one."
+  (interactive "r")
+  (setq killed-rectangle (extract-rectangle start end))
+  (deactivate-mark)
+  (message "Copy rectangle region"))
+(define-key ctl-x-r-map "e" 'my-kill-rectangle-ring-save)

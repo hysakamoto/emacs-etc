@@ -9,6 +9,7 @@
 (setq py-electric-colon-active t)
 ;; (add-hook 'python-mode-hook 'autopair-mode)
 (add-hook 'python-mode-hook 'yas-minor-mode)
+(add-hook 'python-mode-hook 'persp-mode)
 
 
 ;===============================================================
