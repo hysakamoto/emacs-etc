@@ -3,7 +3,7 @@
 ;===============================================================
 
 ;; set loadpath for ess
-(setq load-path (cons "~/.emacs.d/ess-13.09-1/lisp" load-path))
+(add-to-list 'load-path "~/.emacs.d/ESS/lisp")
 
 ;;ess-mode configuration
 (setq ess-ask-for-ess-directory nil) 
@@ -14,4 +14,4 @@
 (setq comint-scroll-to-bottom-on-output t) 
 (setq comint-move-point-for-output t)
 (setq ess-eval-visibly-p nil)
-;; (require 'ess-site)
+(require 'ess-site)

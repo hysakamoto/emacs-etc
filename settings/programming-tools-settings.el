@@ -12,11 +12,12 @@
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-;; add extra include paths
-(add-hook 'flycheck-mode-hook
-		  (lambda () (setq flycheck-clang-include-path
-						   (list "/usr/local/src/libmesh-mbp/include"
-								 ))))
+
+;;===============================================================
+;; git-gutter
+;;===============================================================
+;; https://github.com/syohex/emacs-git-gutter
+(global-git-gutter-mode +1)
 
 ;; ;===============================================================
 ;; ; ctags
@@ -44,17 +45,17 @@
 ; ggtags
 ;===============================================================
 
-(add-hook 'c-mode-common-hook
-          (lambda ()
-            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
-              (ggtags-mode 1))))
+;; (add-hook 'c-mode-common-hook
+;;           (lambda ()
+;;             (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+;;               (ggtags-mode 1))))
 
 
 
-(add-hook 'flycheck-mode-hook
-		  (lambda () (setq flycheck-clang-include-path
-						   (list "/usr/local/src/libmesh-mbp/include"
-								 ))))
+;; (add-hook 'flycheck-mode-hook
+;; 		  (lambda () (setq flycheck-clang-include-path
+;; 						   (list "/usr/local/src/libmesh-mbp/include"
+;; 								 ))))
 
 
 ;; (add-hook 'ggtags-mode-hook
@@ -71,7 +72,7 @@
 ; yasnippet
 ;===============================================================
 
-(require 'yasnippet)				  
+;; (require 'yasnippet)				  
 
 ;; (add-to-list 'load-path
 ;;               "~/.emacs.d/yasnippet-0.8.0")

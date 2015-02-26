@@ -25,6 +25,7 @@
 (add-hook 'markdown-mode-hook
 		  (function (lambda ()
 					  (setq-default indent-tabs-mode nil)
+                      (setq-default electric-indent-mode nil)
 					  (setq-default tab-width 4)
 					  ;; (setq indent-line-function 'insert-tab)
                       (local-set-key (kbd "RET") 'newline)

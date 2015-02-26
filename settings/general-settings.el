@@ -138,9 +138,11 @@
 
 ;; Cause the region to be highlighted and prevent region-based commands
 ;; from running when the mark isn't active.
-(pending-delete-mode t)
-(setq transient-mark-mode t)
+;; (pending-delete-mode t)
+;; (setq transient-mark-mode t)
 
+;; overwite the marked region
+(delete-selection-mode 1)
 
 ;; Emacs and Other Info files
 (require 'info)

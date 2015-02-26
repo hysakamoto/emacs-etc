@@ -8,9 +8,37 @@
 ;; shared settings
 (setq py-electric-colon-active t)
 ;; (add-hook 'python-mode-hook 'autopair-mode)
-(add-hook 'python-mode-hook 'yas-minor-mode)
-(add-hook 'python-mode-hook 'persp-mode)
+;; (add-hook 'python-mode-hook 'yas-minor-mode)
+;; (add-hook 'python-mode-hook 'persp-mode)
 
+
+;; http://hamukazu.com/2014/12/05/setting-emacs-for-python/
+
+(add-hook 'python-mode-hook
+		  (lambda ()
+            (define-key python-mode-map (kbd "\C-m") 'newline-and-indent)
+            (define-key python-mode-map (kbd "RET") 'newline-and-indent)))
+
+;; lint before save
+(add-hook 'before-save-hook 'py-autopep8-before-save)
+
+(require 'tramp-cmds)
+(when (load "flymake" t)
+  (defun flymake-pyflakes-init ()
+	;; Make sure it's not a remote buffer or flymake would not work
+	(when (not (subsetp (list (current-buffer)) (tramp-list-remote-buffers)))
+      (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                         'flymake-create-temp-inplace))
+             (local-file (file-relative-name
+                          temp-file
+                          (file-name-directory buffer-file-name))))
+        (list "pyflakes" (list local-file)))))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.py\\'" flymake-pyflakes-init)))
+
+(add-hook 'python-mode-hook
+          (lambda ()
+            (flymake-mode t)))
 
 ;===============================================================
 ; Python-Mode.el
@@ -32,7 +60,7 @@
 ;===============================================================
 ; Python.el
 ;===============================================================
-(require 'python)
+;; (require 'python)
 
 ;; virtualenv
 ;; (eval-after-load "python-mode"
@@ -106,17 +134,16 @@
 ; ipython
 ;===============================================================
 
-(setq
- python-shell-interpreter "ipython"
- python-shell-interpreter-args ""
- python-shell-prompt-regexp "In \\[[0-9]+\\]: "
- python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
- python-shell-completion-setup-code
- "from IPython.core.completerlib import module_completion"
- python-shell-completion-module-string-code
- "';'.join(module_completion('''%s'''))\n"
- python-shell-completion-string-code
- "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+(setq python-shell-interpreter "ipython"
+	  python-shell-interpreter-args ""
+	  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+	  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+	  python-shell-completion-setup-code
+	  "from IPython.core.completerlib import module_completion"
+	  python-shell-completion-module-string-code
+	  "';'.join(module_completion('''%s'''))\n"
+	  python-shell-completion-string-code
+	  "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
 
 (defun python-shell-send-switch ()
@@ -130,6 +157,11 @@
 			(local-set-key (kbd "C-c C-c") 'python-shell-send-switch)
 			)
 		  )
+
+
+;===============================================================
+; fenics path
+;===============================================================
 
 (defun fenics-workon ()
   "set environmental variables for FEniCS/Dolfin"

@@ -15,6 +15,7 @@
 
 ;; define other helm keys
 (global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "C-^")   'helm-c-apropos)
 (global-set-key (kbd "C-'")   'helm-resume)
 (global-set-key (kbd "M-s")   'helm-occur)
@@ -70,14 +71,14 @@
 		helm-source-buffer-not-found
 		))
 
-;; replace grep with ack-grep
-(when (executable-find "ack-grep") (setq helm-grep-default-command
-  "ack-grep -Hn --no-group --no-color %e %p %f"
-  helm-grep-default-recurse-command "ack-grep -H --no-group --no-color
-  %e %p %f"))
+;; ;; replace grep with ack-grep
+;; (when (executable-find "ack-grep") (setq helm-grep-default-command
+;;   "ack-grep -Hn --no-group --no-color %e %p %f"
+;;   helm-grep-default-recurse-command "ack-grep -H --no-group --no-color
+;;   %e %p %f"))
 
 
-;; want helm-M-x to show functions too
+;; ;; want helm-M-x to show functions too
 
 ;===============================================================
 ; helm-gtags
@@ -86,20 +87,20 @@
 ;; ;; (setq tags-table-list
 ;; ;; 	  '("/usr/local/src/febio_src-2.1.1/GTAGS"))
 
-;; ;; (require 'helm-config)
+;; ;; ;; (require 'helm-config)
 ;; (require 'helm-gtags)
 
 ;; ;;; Enable helm-gtags-mode
 ;; (add-hook 'c-mode-hook 'helm-gtags-mode)
 ;; (add-hook 'c++-mode-hook 'helm-gtags-mode)
-;; (add-hook 'asm-mode-hook 'helm-gtags-mode)
+;; ;; (add-hook 'asm-mode-hook 'helm-gtags-mode)
 
-;; ;; customize
-;; ;; (setq helm-gtags-path-style 'relative)
+;; ;; ;; customize
+;; ;; ;; (setq helm-gtags-path-style 'relative)
 ;; (setq helm-gtags-ignore-case t)
-;; ;; (setq helm-gtags-read-only t)
+;; (setq helm-gtags-read-only t)
 
-;; (setq helm-gtags-path-style 'absolute)
+;; ;; (setq helm-gtags-path-style 'absolute)
 
 ;; ;; key bindings
 ;; (add-hook 'helm-gtags-mode-hook
@@ -109,3 +110,14 @@
 ;;               (local-set-key (kbd "M-s") 'helm-gtags-find-symbol) ;; where it appears
 ;;               (local-set-key (kbd "M-p") 'helm-gtags-find-files)
 ;;               (local-set-key (kbd "C-t") 'helm-gtags-pop-stack))) ;; go back
+
+
+
+;; ===============================================================
+;; helm-ls-git
+;; ===============================================================
+;; https://github.com/emacs-helm/helm-ls-git
+
+(require 'helm-ls-git)
+(global-set-key (kbd "<f6>") 'helm-ls-git-ls)
+(global-set-key (kbd "C-x C-d") 'helm-browse-project)

@@ -43,10 +43,10 @@
 (load-file "~/.emacs.d/settings/major-mode-settings.el")
 
 ;; programming settings
-(load-file "~/.emacs.d/settings/auctex-settings.el")
+;; (load-file "~/.emacs.d/settings/auctex-settings.el")
 (load-file "~/.emacs.d/settings/cpp-mode-settings.el")
 (load-file "~/.emacs.d/settings/python-mode-settings.el")
-(load-file "~/.emacs.d/settings/octave-mode-settings.el")
+;; (load-file "~/.emacs.d/settings/octave-mode-settings.el")
 (load-file "~/.emacs.d/settings/haskell-settings.el")
 (load-file "~/.emacs.d/settings/r-settings.el")
 (load-file "~/.emacs.d/settings/markdown-mode-settings.el")
