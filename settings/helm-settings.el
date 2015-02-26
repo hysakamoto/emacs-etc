@@ -83,33 +83,27 @@
 ;===============================================================
 ; helm-gtags
 ;===============================================================
+(require 'helm-gtags)
 
-;; ;; (setq tags-table-list
-;; ;; 	  '("/usr/local/src/febio_src-2.1.1/GTAGS"))
+;;; Enable helm-gtags-mode
+(add-hook 'c-mode-hook 'helm-gtags-mode)
+(add-hook 'c++-mode-hook 'helm-gtags-mode)
 
-;; ;; ;; (require 'helm-config)
-;; (require 'helm-gtags)
-
-;; ;;; Enable helm-gtags-mode
-;; (add-hook 'c-mode-hook 'helm-gtags-mode)
-;; (add-hook 'c++-mode-hook 'helm-gtags-mode)
-;; ;; (add-hook 'asm-mode-hook 'helm-gtags-mode)
-
-;; ;; ;; customize
-;; ;; ;; (setq helm-gtags-path-style 'relative)
-;; (setq helm-gtags-ignore-case t)
-;; (setq helm-gtags-read-only t)
+;; customize
+(setq helm-gtags-ignore-case t)
+(setq helm-gtags-read-only t)
 
 ;; ;; (setq helm-gtags-path-style 'absolute)
+;; ;; (setq helm-gtags-path-style 'relative)
 
-;; ;; key bindings
-;; (add-hook 'helm-gtags-mode-hook
-;;           '(lambda ()
-;;               (local-set-key (kbd "M-t") 'helm-gtags-find-tag) ;; where it's defined
-;;               (local-set-key (kbd "M-r") 'helm-gtags-find-rtag) ;; where it's used
-;;               (local-set-key (kbd "M-s") 'helm-gtags-find-symbol) ;; where it appears
-;;               (local-set-key (kbd "M-p") 'helm-gtags-find-files)
-;;               (local-set-key (kbd "C-t") 'helm-gtags-pop-stack))) ;; go back
+;; key bindings
+(add-hook 'helm-gtags-mode-hook
+          '(lambda ()
+			 (local-set-key (kbd "M-t") 'helm-gtags-find-tag) ;; where it's defined
+			 (local-set-key (kbd "M-r") 'helm-gtags-find-rtag) ;; where it's used
+			 (local-set-key (kbd "M-s") 'helm-gtags-find-symbol) ;; where it appears
+			 (local-set-key (kbd "M-p") 'helm-gtags-find-files)
+			 (local-set-key (kbd "C-t") 'helm-gtags-pop-stack))) ;; go back
 
 
 
@@ -117,7 +111,21 @@
 ;; helm-ls-git
 ;; ===============================================================
 ;; https://github.com/emacs-helm/helm-ls-git
-
 (require 'helm-ls-git)
 (global-set-key (kbd "<f6>") 'helm-ls-git-ls)
 (global-set-key (kbd "C-x C-d") 'helm-browse-project)
+
+
+
+;; ===============================================================
+;; helm-ag
+;; ===============================================================
+;; https://github.com/syohex/emacs-helm-ag
+(require 'helm-ag)
+
+(global-set-key (kbd "M-g .") 'helm-ag)
+(global-set-key (kbd "M-g ,") 'helm-ag-pop-stack)
+(global-set-key (kbd "C-M-s") 'helm-ag-this-file)
+(setq helm-ag-base-command "ag --nocolor --nogroup --ignore-case")
+(setq helm-ag-command-option "--all-text")
+(setq helm-ag-insert-at-point 'symbol)
