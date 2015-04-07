@@ -20,7 +20,7 @@
             (define-key python-mode-map (kbd "RET") 'newline-and-indent)))
 
 ;; lint before save
-(add-hook 'before-save-hook 'py-autopep8-before-save)
+;; (add-hook 'before-save-hook 'py-autopep8-before-save)
 
 (require 'tramp-cmds)
 (when (load "flymake" t)

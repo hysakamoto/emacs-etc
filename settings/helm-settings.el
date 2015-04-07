@@ -14,7 +14,7 @@
 (global-unset-key (kbd "C-x c"))
 
 ;; define other helm keys
-(global-set-key (kbd "C-x b") 'helm-mini)
+(global-set-key (kbd "C-x b") 'helm-for-files)
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (global-set-key (kbd "C-^")   'helm-c-apropos)
 (global-set-key (kbd "C-'")   'helm-resume)
@@ -23,7 +23,7 @@
 (global-set-key (kbd "M-y")   'helm-show-kill-ring)
 (global-set-key (kbd "M-z")   'helm-do-grep)
 (global-set-key (kbd "C-S-h") 'helm-descbinds)
-(global-set-key (kbd "C-!")   'helm-imenu)
+(global-set-key (kbd "C-!")   'helm-imenu-anywhere)
 (global-set-key (kbd "C-`")  'helm-bookmarks)
 
 ;; rebind tab to run persistent action
@@ -47,6 +47,7 @@
  helm-idle-delay             0.1
  helm-input-idle-delay       0.1
  helm-candidate-number-limit 200
+ ;; helm-buffer-max-length 25
  )
 
 (set-face-attribute 'helm-selection nil :background "#441100")
@@ -56,10 +57,10 @@
 ;; do not use locate for helm-for-files
 (setq helm-for-files-preferred-list
 	  '(helm-source-buffers-list
+		helm-source-files-in-current-dir
 		helm-source-recentf
 		helm-source-bookmarks
 		helm-source-file-cache
-		helm-source-files-in-current-dir
 		))
 
 (setq helm-mini-default-sources
