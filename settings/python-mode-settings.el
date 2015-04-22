@@ -1,9 +1,45 @@
-;; python autocomplete
-;; (add-hook 'python-mode-hook 'auto-complete-mode)
+;===============================================================
+;; python.el configuration
+;===============================================================
 
-;; virtualenv
-;; (eval-after-load "python-mode"
-;;   '(virtualenv-workon "ys-mbp"))
+(defun system-is-mac ()
+  (interactive)
+  (string-equal system-type "darwin"))
+
+; from python.el
+(require 'python)
+
+
+(setq python-shell-interpreter "ipython"
+	  python-shell-interpreter-args ""
+	  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+	  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+	  python-shell-completion-setup-code
+	  "from IPython.core.completerlib import module_completion"
+	  python-shell-completion-module-string-code
+	  "';'.join(module_completion('''%s'''))\n"
+	  python-shell-completion-string-code
+	  "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+
+
+(defun python-shell-send-switch ()
+  "send the buffer to python shell and switch to it"
+  (interactive)
+  (python-shell-send-buffer)
+  (python-shell-switch-to-shell) )
+
+;; (add-hook 'python-mode-hook
+;; 		  (lambda ()
+;; 			(local-set-key (kbd "C-c C-c") 'python-shell-send-switch)
+;; 			)
+;; 		  )
+
+;; http://hamukazu.com/2014/12/05/setting-emacs-for-python/
+(add-hook 'python-mode-hook
+		  (lambda ()
+            (define-key python-mode-map (kbd "\C-m") 'newline-and-indent)
+            (define-key python-mode-map (kbd "RET") 'newline-and-indent)))
+
 
 ;; shared settings
 (setq py-electric-colon-active t)
@@ -11,71 +47,46 @@
 ;; (add-hook 'python-mode-hook 'yas-minor-mode)
 ;; (add-hook 'python-mode-hook 'persp-mode)
 
-
-;; http://hamukazu.com/2014/12/05/setting-emacs-for-python/
-
-(add-hook 'python-mode-hook
-		  (lambda ()
-            (define-key python-mode-map (kbd "\C-m") 'newline-and-indent)
-            (define-key python-mode-map (kbd "RET") 'newline-and-indent)))
-
 ;; lint before save
 ;; (add-hook 'before-save-hook 'py-autopep8-before-save)
 
-(require 'tramp-cmds)
-(when (load "flymake" t)
-  (defun flymake-pyflakes-init ()
-	;; Make sure it's not a remote buffer or flymake would not work
-	(when (not (subsetp (list (current-buffer)) (tramp-list-remote-buffers)))
-      (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                         'flymake-create-temp-inplace))
-             (local-file (file-relative-name
-                          temp-file
-                          (file-name-directory buffer-file-name))))
-        (list "pyflakes" (list local-file)))))
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.py\\'" flymake-pyflakes-init)))
-
-(add-hook 'python-mode-hook
-          (lambda ()
-            (flymake-mode t)))
-
 ;===============================================================
-; Python-Mode.el
+;; emacs IPython notebook config
 ;===============================================================
 
-;; (require 'python-mode)
-;; (add-to-list 'auto-mode-alist '("\\.py$" . python-mode))
-;; (setq py-split-windows-on-execute-p nil)
+;; ; use autocompletion, but don't start to autocomplete after a dot
+;; (setq ein:complete-on-dot -1)
+;; (setq ein:use-auto-complete 1)
 
-;; ;; use ipython as an interpreter
-;; (add-hook 'python-mode-hook
-;;           (lambda () (local-set-key (kbd "C-c C-c") #'py-execute-buffer-ipython)))
-;; (add-hook 'python-mode-hook
-;;           (lambda () (local-set-key (kbd "C-c C-r") #'py-execute-region-ipython)))
+;; ; set python console args
+;; (setq ein:console-args
+;;       (if (system-is-mac)
+;; 	  '("--gui=osx" "--matplotlib=osx" "--colors=Linux")
+;; 	(if (system-is-linux)
+;; 	    '("--gui=wx" "--matplotlib=wx" "--colors=Linux"))))
 
+;; ; timeout settings
+;; (setq ein:query-timeout 1000)
 
+;; ; IPython notebook
+;; (include-plugin "emacs-ipython-notebook/lisp")
+;; (require 'ein)
+
+;; ; shortcut function to load notebooklist
+;; (defun load-ein () 
+;;   (ein:notebooklist-load)
+;;   (interactive)
+;;   (ein:notebooklist-open))
 
 
 ;===============================================================
-; Python.el
+;; pydoc
 ;===============================================================
-;; (require 'python)
-
-;; virtualenv
-;; (eval-after-load "python-mode"
-;;   (lambda ()
-;; 	(virtualenv-workon "ys-mbp")))
-
-;; (add-hook 'python-mode-hook
-;; 		  (lambda ()
-;; 		  (virtualenv-workon "ys-mbp")))
-
+(require 'pydoc-info)
 
 ;===============================================================
 ; jedi
 ;===============================================================
-
 (require 'jedi)
 
 ;; use the setting from
@@ -109,55 +120,72 @@
              (local-set-key (kbd "C-c d") 'jedi:show-doc)
              (local-set-key (kbd "C-<tab>") 'jedi:complete)))
 
-;; (add-hook 'python-mode-hook
-;; 		  (lambda ()
-;; 			(jedi:setup)
-;; 			;; (jedi:ac-setup)
-;; 			(local-set-key "\C-cd" 'jedi:show-doc)
-;; 			(local-set-key (kbd "C-.") 'jedi:complete)
-;; 			(local-set-key (kbd "M-.") 'jedi:goto-definition)
-;; 			(local-set-key (kbd "M-,") 'find-tag)
-;; 			(local-set-key (kbd "M-/") 'helm-etags-select)
-;; 			(setq ac-auto-start nil)
-;; 			)
-;; 		  )
-
 (setq jedi:server-args
       '("--sys-path" "/usr/local/src/fenics/dolfin/lib/python2.7/site-packages/"))
 
+;; ; jedi python completion
+;; (include-elget-plugin "ctable")   ; required for epc
+;; (include-elget-plugin "deferred") ; required for epc
+;; (include-elget-plugin "epc")      ; required for jedi
+;; (include-elget-plugin "jedi")
+;; (require 'jedi)
+;; (setq jedi:setup-keys t)
+;; (autoload 'jedi:setup "jedi" nil t)
+;; (add-hook 'python-mode-hook 'jedi:setup)
 
-;; (autoload 'python-mode "python-mode" "Python Mode." t)
-;; (add-to-list 'interpreter-mode-alist '("python" . python-mode))
+;;===============================================================
+;; pyflakes flymake integration
+;; http://stackoverflow.com/a/1257306/347942
+;;===============================================================
+
+;; python-mode をロードする
+(when (autoload 'python-mode "python-mode" "Python editing mode." t)
+  ;; python-pep8 keybind
+  (setq python-mode-hook
+		(function (lambda ()
+					(local-set-key (kbd "C-c p") 'python-pep8))))
+  (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
+  (setq interpreter-mode-alist (cons '("python" . python-mode)
+                                     interpreter-mode-alist)))
+
+;; flymake for python
+(add-hook 'python-mode-hook 'flymake-find-file-hook)
+(when (load "flymake" t)
+  (defun flymake-pyflakes-init ()
+    (let* ((temp-file (flymake-init-create-temp-buffer-copy
+                       'flymake-create-temp-inplace))
+           (local-file (file-relative-name
+                        temp-file
+                        (file-name-directory buffer-file-name))))))
+  (add-to-list 'flymake-allowed-file-name-masks
+               '("\\.py\\'" flymake-pyflakes-init)))
+(load-library "flymake-cursor")
 
 
 ;===============================================================
-; ipython
+; Set PYTHONPATH, because we don't load .bashrc
 ;===============================================================
+(defun set-python-path-from-shell-PYTHONPATH ()
+  (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PYTHONPATH'")))
+    (setenv "PYTHONPATH" path-from-shell)))
 
-(setq python-shell-interpreter "ipython"
-	  python-shell-interpreter-args ""
-	  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
-	  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
-	  python-shell-completion-setup-code
-	  "from IPython.core.completerlib import module_completion"
-	  python-shell-completion-module-string-code
-	  "';'.join(module_completion('''%s'''))\n"
-	  python-shell-completion-string-code
-	  "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+(if window-system (set-python-path-from-shell-PYTHONPATH))
 
+(setq auto-mode-alist
+      (append 
+       (list '("\\.pyx" . python-mode)
+             '("SConstruct" . python-mode))
+       auto-mode-alist))
 
-(defun python-shell-send-switch ()
-  "send the buffer to python shell and switch to it"
-  (interactive)
-  (python-shell-send-buffer)
-  (python-shell-switch-to-shell) )
+;===============================================================
+; keybindings
+;===============================================================
+(eval-after-load 'python
+  '(define-key python-mode-map (kbd "C-c 1") 'python-shell-switch-to-shell))
+(eval-after-load 'python
+  '(define-key python-mode-map (kbd "C-c |") 'python-shell-send-region))
 
-(add-hook 'python-mode-hook
-		  (lambda ()
-			(local-set-key (kbd "C-c C-c") 'python-shell-send-switch)
-			)
-		  )
-
+(provide 'python-settings)
 
 ;===============================================================
 ; fenics path
@@ -192,6 +220,3 @@
 
 (set-face-background 'highlight-indentation-face "#e3e3d3")
 (set-face-background 'highlight-indentation-current-column-face "#c3b3b3")
-
-;; (add-hook 'js2-mode-hook
-;; 'highlight-indentation-mode)

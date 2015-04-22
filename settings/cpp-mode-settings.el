@@ -45,19 +45,19 @@
         (define-key c-mode-base-map [(shift f4)] 'previous-error)
         (define-key c-mode-base-map [f7] 'compile)
         (define-key c-mode-base-map [(shift f9)] 'kill-compilation)
-	(define-key c-mode-base-map [(shift f7)] 
+		(define-key c-mode-base-map [(shift f7)] 
           '(lambda () 
              (interactive)
              ;;(require 'compile)
              ;;(save-some-buffers (not compilation-ask-about-save) nil)
-             (compile-start "make clean" "No more errors")))
-	(define-key c-mode-base-map [f9] 
+             (compilation-start "make clean" "No more errors")))
+		(define-key c-mode-base-map [f9] 
           '(lambda () 
              (interactive)
              ;;(require 'compile)
              ;;(save-some-buffers (not compilation-ask-about-save) nil)
              (compilation-start "make run")))
-      ))
+		))
 
 ;; for annoying macro indentation in openmp
 ;; (c-set-offset (quote cpp-macro) 0 nil)
