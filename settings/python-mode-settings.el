@@ -1,26 +1,23 @@
 ;===============================================================
 ;; python.el configuration
 ;===============================================================
+;;; Code:
 
-(defun system-is-mac ()
-  (interactive)
-  (string-equal system-type "darwin"))
 
-; from python.el
+;; from python.el
 (require 'python)
-
-
-(setq python-shell-interpreter "ipython"
-	  python-shell-interpreter-args ""
-	  python-shell-prompt-regexp "In \\[[0-9]+\\]: "
-	  python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
-	  python-shell-completion-setup-code
-	  "from IPython.core.completerlib import module_completion"
-	  python-shell-completion-module-string-code
-	  "';'.join(module_completion('''%s'''))\n"
-	  python-shell-completion-string-code
-	  "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
-
+(setq
+ python-indent-offset 4
+ python-shell-interpreter "ipython"
+ python-shell-interpreter-args ""
+ python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+ python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+ python-shell-completion-setup-code
+ "from IPython.core.completerlib import module_completion"
+ python-shell-completion-module-string-code
+ "';'.join(module_completion('''%s'''))\n"
+ python-shell-completion-string-code
+ "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
 (defun python-shell-send-switch ()
   "send the buffer to python shell and switch to it"
@@ -28,11 +25,11 @@
   (python-shell-send-buffer)
   (python-shell-switch-to-shell) )
 
-;; (add-hook 'python-mode-hook
-;; 		  (lambda ()
-;; 			(local-set-key (kbd "C-c C-c") 'python-shell-send-switch)
-;; 			)
-;; 		  )
+(add-hook 'python-mode-hook
+		  (lambda ()
+			(local-set-key (kbd "C-c C-c") 'python-shell-send-switch)
+			)
+		  )
 
 ;; http://hamukazu.com/2014/12/05/setting-emacs-for-python/
 (add-hook 'python-mode-hook
@@ -138,77 +135,76 @@
 ;; http://stackoverflow.com/a/1257306/347942
 ;;===============================================================
 
-;; python-mode をロードする
-(when (autoload 'python-mode "python-mode" "Python editing mode." t)
-  ;; python-pep8 keybind
-  (setq python-mode-hook
-		(function (lambda ()
-					(local-set-key (kbd "C-c p") 'python-pep8))))
-  (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
-  (setq interpreter-mode-alist (cons '("python" . python-mode)
-                                     interpreter-mode-alist)))
+;; ;; python-mode をロードする
+;; (when (autoload 'python-mode "python-mode" "Python editing mode." t)
+;;   ;; python-pep8 keybind
+;;   (setq python-mode-hook
+;; 		(function (lambda ()
+;; 					(local-set-key (kbd "C-c p") 'python-pep8))))
+;;   (setq auto-mode-alist (cons '("\\.py$" . python-mode) auto-mode-alist))
+;;   (setq interpreter-mode-alist (cons '("python" . python-mode)
+;;                                      interpreter-mode-alist)))
 
-;; flymake for python
-(add-hook 'python-mode-hook 'flymake-find-file-hook)
-(when (load "flymake" t)
-  (defun flymake-pyflakes-init ()
-    (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                       'flymake-create-temp-inplace))
-           (local-file (file-relative-name
-                        temp-file
-                        (file-name-directory buffer-file-name))))))
-  (add-to-list 'flymake-allowed-file-name-masks
-               '("\\.py\\'" flymake-pyflakes-init)))
-(load-library "flymake-cursor")
+;; ;; flymake for python
+;; (add-hook 'python-mode-hook 'flymake-find-file-hook)
+;; (when (load "flymake" t)
+;;   (defun flymake-pyflakes-init ()
+;;     (let* ((temp-file (flymake-init-create-temp-buffer-copy
+;;                        'flymake-create-temp-inplace))
+;;            (local-file (file-relative-name
+;;                         temp-file
+;;                         (file-name-directory buffer-file-name))))))
+;;   (add-to-list 'flymake-allowed-file-name-masks
+;;                '("\\.py\\'" flymake-pyflakes-init)))
+;; (load-library "flymake-cursor")
 
 
 ;===============================================================
 ; Set PYTHONPATH, because we don't load .bashrc
 ;===============================================================
-(defun set-python-path-from-shell-PYTHONPATH ()
-  (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PYTHONPATH'")))
-    (setenv "PYTHONPATH" path-from-shell)))
+;; (defun set-python-path-from-shell-PYTHONPATH ()
+;;   (let ((path-from-shell (shell-command-to-string "$SHELL -i -c 'echo $PYTHONPATH'")))
+;;     (setenv "PYTHONPATH" path-from-shell)))
 
-(if window-system (set-python-path-from-shell-PYTHONPATH))
+;; (if window-system (set-python-path-from-shell-PYTHONPATH))
 
-(setq auto-mode-alist
-      (append 
-       (list '("\\.pyx" . python-mode)
-             '("SConstruct" . python-mode))
-       auto-mode-alist))
+;; (setq auto-mode-alist
+;;       (append 
+;;        (list '("\\.pyx" . python-mode)
+;;              '("SConstruct" . python-mode))
+;;        auto-mode-alist))
 
 ;===============================================================
 ; keybindings
 ;===============================================================
 (eval-after-load 'python
   '(define-key python-mode-map (kbd "C-c 1") 'python-shell-switch-to-shell))
-(eval-after-load 'python
-  '(define-key python-mode-map (kbd "C-c |") 'python-shell-send-region))
+;; (eval-after-load 'python
+;;   '(define-key python-mode-map (kbd "C-c |") 'python-shell-send-region))
 
-(provide 'python-settings)
 
 ;===============================================================
 ; fenics path
 ;===============================================================
 
-(defun fenics-workon ()
-  "set environmental variables for FEniCS/Dolfin"
-  (interactive)
-  (setenv "DYLD_LIBRARY_PATH"
-		  (concat "/usr/local/src/fenics/lib:"
-				  (getenv "DYLD_LIBRARY_PATH")))
-  (setenv "PATH"
-		  (concat "/usr/local/src/fenics/bin:" (getenv "PATH")))
-  (setenv "PKG_CONFIG_PATH"
-		  (concat "/usr/local/src/fenics/lib/pkgconfig:" (getenv "PKG_CONFIG_PATH")))
-  (setenv "PYTHONPATH"
-		  (concat "/Users/ysakamoto/.virtualenvs/fenics/lib/python2.7/site-packages:" (getenv "PYTHONPATH")))
-  (setenv "MANPATH"
-		  (concat "/usr/local/src/fenics/share/man:" (getenv "$MANPATH")))
-  (setenv "DYLD_FRAMEWORK_PATH"
-		  (concat "/opt/local/Library/Frameworks:" (getenv "DYLD_FRAMEWORK_PATH"))
-		  )
-  )
+;; (defun fenics-workon ()
+;;   "set environmental variables for FEniCS/Dolfin"
+;;   (interactive)
+;;   (setenv "DYLD_LIBRARY_PATH"
+;; 		  (concat "/usr/local/src/fenics/lib:"
+;; 				  (getenv "DYLD_LIBRARY_PATH")))
+;;   (setenv "PATH"
+;; 		  (concat "/usr/local/src/fenics/bin:" (getenv "PATH")))
+;;   (setenv "PKG_CONFIG_PATH"
+;; 		  (concat "/usr/local/src/fenics/lib/pkgconfig:" (getenv "PKG_CONFIG_PATH")))
+;;   (setenv "PYTHONPATH"
+;; 		  (concat "/Users/ysakamoto/.virtualenvs/fenics/lib/python2.7/site-packages:" (getenv "PYTHONPATH")))
+;;   (setenv "MANPATH"
+;; 		  (concat "/usr/local/src/fenics/share/man:" (getenv "$MANPATH")))
+;;   (setenv "DYLD_FRAMEWORK_PATH"
+;; 		  (concat "/opt/local/Library/Frameworks:" (getenv "DYLD_FRAMEWORK_PATH"))
+;; 		  )
+;;   )
 
 ;===============================================================
 ; highlight-indentation.el

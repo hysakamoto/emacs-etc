@@ -248,3 +248,26 @@
   (deactivate-mark)
   (message "Copy rectangle region"))
 (define-key ctl-x-r-map "e" 'my-kill-rectangle-ring-save)
+
+
+;===============================================================
+; copy fullpath of the current file
+;===============================================================
+(defun copy-full-path-to-kill-ring ()
+  "copy buffer's full path to kill ring"
+  (interactive)
+  (when buffer-file-name
+    (kill-new (file-truename buffer-file-name))))
+
+
+(defun my-put-file-name-on-clipboard ()
+  "Put the current file name on the clipboard"
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (with-temp-buffer
+        (insert filename)
+        (clipboard-kill-region (point-min) (point-max)))
+      (message filename))))

@@ -15,7 +15,9 @@
  '(anzu-deactivate-region t)
  '(anzu-mode-lighter "")
  '(anzu-search-threshold 1000)
- '(initial-frame-alist (quote ((fullscreen . maximized)))))
+ '(initial-frame-alist (quote ((fullscreen . maximized))))
+ '(persp-auto-resume-time -1.0)
+ '(persp-nil-name "~none"))
 
 ;===============================================================
 ; custom-themes

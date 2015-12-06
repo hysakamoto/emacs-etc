@@ -61,26 +61,30 @@
 ;; elscreen-separate-buffer-list
 ;; elscreen-persist
 ;; ===============================================================
-(setq elscreen-prefix-key (kbd "C-z"))
-(elscreen-start)
+;; (setq elscreen-prefix-key (kbd "C-z"))
+;; (elscreen-start)
 
-;; no [X] at the beginning of tabs
-(setq elscreen-tab-display-kill-screen nil)
-;; no [<->]
-(setq elscreen-tab-display-control nil)
+;; ;; no [X] at the beginning of tabs
+;; (setq elscreen-tab-display-kill-screen nil)
+;; ;; no [<->]
+;; (setq elscreen-tab-display-control nil)
 
-;; (elscreen-persist-mode 1)
-(elscreen-separate-buffer-list-mode 1)
-(setq elscreen-next)
+;; ;; (elscreen-persist-mode 1)
+;; (elscreen-separate-buffer-list-mode 1)
+;; (setq elscreen-next)
 
-(global-set-key (kbd "C-z v") 'helm-elscreen)
+;; (global-set-key (kbd "C-z v") 'helm-elscreen)
 
 ;; ===============================================================
 ;; persp-mode.el
 ;; ===============================================================
 ;; (setq persp-keymap-prefix (kbd "C-c p")) ;prefix
 ;; (setq persp-add-on-switch-or-display t) ;バッファを切り替えたら見えるようにする
-;; (persp-mode 1)
+;; (setq persp-auto-save-opt 0)  ; do not autosave
+
+(setq persp-keymap-prefix (kbd "C-z")) ;prefix
+(persp-mode 1)
+
 ;; (defun persp-register-buffers-on-create ()
 ;;   (interactive)
 ;;   (dolist (bufname (condition-case _
