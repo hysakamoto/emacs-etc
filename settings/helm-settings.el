@@ -5,6 +5,7 @@
 
 ;;; Code:
 
+(require 'helm-mode)
 (require 'helm-config)
 (require 'helm-command)
 (require 'helm-descbinds)
@@ -21,7 +22,7 @@
 (global-set-key (kbd "M-s")   'helm-occur)
 (global-set-key (kbd "M-x")   'helm-M-x)
 (global-set-key (kbd "M-y")   'helm-show-kill-ring)
-(global-set-key (kbd "M-z")   'helm-do-grep)
+(global-set-key (kbd "M-z")   'helm-do-ag)
 (global-set-key (kbd "C-S-h") 'helm-descbinds)
 (global-set-key (kbd "C-!")   'helm-imenu-anywhere)
 (global-set-key (kbd "C-`")  'helm-bookmarks)

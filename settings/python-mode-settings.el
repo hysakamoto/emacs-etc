@@ -1,4 +1,10 @@
 ;===============================================================
+;; anaconda-mode configuration
+;===============================================================
+;; (add-hook 'python-mode-hook 'anaconda-mode)
+;; (add-hook 'python-mode-hook 'eldoc-mode)
+
+;===============================================================
 ;; elpy configuration
 ;===============================================================
 
@@ -24,6 +30,8 @@
 			(local-set-key (kbd "<s-down>") 'elpy-nav-forward-block)
 			(local-set-key (kbd "<s-left>") 'elpy-nav-backward-indent)
 			(local-set-key (kbd "<s-right>") 'elpy-nav-forward-indent)
+
+			(local-set-key (kbd "C-c C-a") 'python-shell-send-region)
 			)
 		  )
 
@@ -89,34 +97,6 @@
 
 ;; ;; lint before save
 ;; ;; (add-hook 'before-save-hook 'py-autopep8-before-save)
-
-;; ;===============================================================
-;; ;; emacs IPython notebook config
-;; ;===============================================================
-
-;; ;; ; use autocompletion, but don't start to autocomplete after a dot
-;; ;; (setq ein:complete-on-dot -1)
-;; ;; (setq ein:use-auto-complete 1)
-
-;; ;; ; set python console args
-;; ;; (setq ein:console-args
-;; ;;       (if (system-is-mac)
-;; ;; 	  '("--gui=osx" "--matplotlib=osx" "--colors=Linux")
-;; ;; 	(if (system-is-linux)
-;; ;; 	    '("--gui=wx" "--matplotlib=wx" "--colors=Linux"))))
-
-;; ;; ; timeout settings
-;; ;; (setq ein:query-timeout 1000)
-
-;; ;; ; IPython notebook
-;; ;; (include-plugin "emacs-ipython-notebook/lisp")
-;; ;; (require 'ein)
-
-;; ;; ; shortcut function to load notebooklist
-;; ;; (defun load-ein () 
-;; ;;   (ein:notebooklist-load)
-;; ;;   (interactive)
-;; ;;   (ein:notebooklist-open))
 
 
 ;; ;===============================================================
