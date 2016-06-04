@@ -55,6 +55,9 @@
 ;; yes or no to y or n
 (fset 'yes-or-no-p 'y-or-n-p)
 
+;; overwrite selection
+(delete-selection-mode 1)
+
 ;; recent files and number of recent files
 (recentf-mode t)
 (setq recentf-max-menu-items 500)
